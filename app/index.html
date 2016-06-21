@@ -3,7 +3,7 @@
 <head>
 </head>
   <link rel="stylesheet" href="./assets/bootstrap.css">
-  <link rel="stylesheet" href="./assets/alertify.css">
+  <link rel="stylesheet" href="./assets/sweetalert.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -50,7 +50,7 @@
 </p>
 <p>Enjoy !</p>
 </div>
-  <script src="./assets/alertify.js"></script>
+  <script src="./assets/sweetalert.min.js"></script>
   <script type="text/javascript">
 
 function getField(field) {
@@ -69,13 +69,25 @@ function submitForm() {
     headers: {'Content-Type': 'application/json'}
   }).then(function (result) {
     if (result.status >= 400) {
-      alertify.error("The server wasn't able to start the job, please check your inputs.");
+      swal("The server wasn't able to start the job, please check your inputs.", "error");
     } else {
-      alertify.success("The job has been submitted! You'll receive an email when it's finished.");
+      return result.json();
     }
   })
+  .then(function(jsonData) {
+    var link = "<a href='/status/" + jsonData.job_id + "'> follow its progress</a>";
+    var msg = "You'll receive an email when it's finished. " +
+              "In the meantime you can " + link;
+
+    swal({
+      type: "success",
+      title: "The job has been submitted!",
+      text: msg,
+      html: true
+    });
+  })
  .catch(function (error) {
-   alertify.error("Sorry, we weren't able to join the server. This is usually due to connectivity issues.");
+   swal("Sorry, we weren't able to join the server. This is usually due to connectivity issues.", "error");
  });
    return false;
 }
