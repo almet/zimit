@@ -106,6 +106,7 @@ Create a virtual environment and install the project in it::
 
   $ virtualenv venv
   $ venv/bin/pip install -e .
+  $ venv/bin/pip install -e git+git@github.com:nvie/rq.git@master#egg=rq
 
 Then, run it how you want, for instance with pserve::
 
